@@ -1,0 +1,14 @@
+h1 {
+    color: blue;
+    text-align: center; 
+}
+.input-form {
+    padding-top: 0px;
+    padding-bottom: 10px;
+    text-align: center;
+}
+.multiple-staff-container {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    column-gap: 10px;
+}

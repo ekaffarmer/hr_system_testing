@@ -1,0 +1,471 @@
+<!-- index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.css" />
+        <link rel="stylesheet" href="/static/style.css">
+        <script src="https://cdn.jsdelivr.net/npm/handsontable/dist/handsontable.full.min.js"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/hyperformula/dist/hyperformula.full.min.js"></script> -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
+        <link rel="icon" type="image/x-icon" href="../favicon.ico">
+        <title>HR system testing</title>
+    </head>
+    <body>
+        <h1>HR system testing</h1>
+        <!-- <form action="/save_name.html" method="POST" class="input-form">
+            <label for="fname">First name:</label>
+            <input type="text" name="fname">
+            <label for="lname">Last name:</label>
+            <input type="text" name="lname">    
+            <input type="submit" value="Submit" >
+        </form><br> -->
+        <p>Monthly view for one staff:</p>
+        <div id="container0"></div>
+        <p>Status: <span id="console0"></span></p>
+        <button id="staff_save0">Save data</button>
+        <p>Monthly view for multiple staff:</p>
+        <div class="multiple-staff-container">
+            <div>
+                <div id="container1"></div>
+                <p>Status: <span id="console1"></span></p>
+                <button id="staff_save1">Save data</button>
+            </div>
+            <div>
+                <div id="container2"></div>
+                <p>Status: <span id="console2"></span></p>
+                <button id="staff_save2">Save data</button>
+            </div>
+            <div>
+                <div id="container3"></div>
+                <p>Status: <span id="console3"></span></p>
+                <button id="staff_save3">Save data</button>
+            </div>
+        </div>
+    </body>
+    <script>
+        const total_shift_no_s0_w1 = '=COUNTIF($B$4:$H$6,"O") + COUNTIF($B$4:$H$6,"F") + COUNTIF($B$4:$H$6,"O+")*1.5 +  COUNTIF($B$4:$H$6,"F+")*1.5 + COUNTIF($B$4:$H$6,"O-")*0.5 + COUNTIF($B$4:$H$6,"F-")*0.5 & "/11"';
+        const data0 = [
+            ['同工0', '', '', '', '', '', '', total_shift_no_s0_w1, '', '', '', '', '', '', '', '', '11/11', '', '', '', '', '', '', '', '', '11/11'],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', '', 'Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', '', 'Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--', '', 'Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--', '', 'Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , , 'Morning', 'O', 'O', 'O', 'F', 'O', '', '', '', 'Morning', 'O', 'O', 'O', 'F', 'O', '', ''],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , , 'Afternoon', 'O', 'O', 'O', 'F', 'O', '', '', '', 'Afternoon', 'O', 'O', 'O', 'F', 'O', '', ''],
+            ['Evening', , , , 'F', , , , , 'Evening', '', '', '', 'F', '', '', '', '', 'Evening', '', '', '', 'F', '', '', ''],
+            ['End Time', '19:00' , '19:00', '19:00', '23:00', '19:00', '--:--', '--:--', '', 'End Time', '19:00' , '19:00', '19:00', '23:00', '19:00', '--:--', '--:--', '', 'End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', '', '', '11/11', '', '', '', '', '', '', '', '', '11/11', '', '', '', '', '', '', '', '', ''],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', '', 'Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--', '', 'Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', '', '', '', 'Morning', 'O', 'O', 'O', 'F', 'O', '', ''],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', '', '', '', 'Afternoon', 'O', 'O', 'O', 'F', 'O', '', ''],
+            ['Evening', '', '', '', 'F', '', '', '', '', 'Evening', '', '', '', 'F', '', '', ''],
+            ['End Time', '19:00' , '19:00', '19:00', '23:00', '19:00', '--:--', '--:--', '', 'End Time', '19:00' , '19:00', '19:00', '23:00', '19:00', '--:--', '--:--']
+        ];
+        
+        const total_shift_no_s1_w1 = '=COUNTIF($B$4:$H$6,"O") + COUNTIF($B$4:$H$6,"F") + COUNTIF($B$4:$H$6,"O+")*1.5 +  COUNTIF($B$4:$H$6,"F+")*1.5 + COUNTIF($B$4:$H$6,"O-")*0.5 + COUNTIF($B$4:$H$6,"F-")*0.5 & "/11"';
+        const total_shift_no_s1_w2 = '=COUNTIF($B$11:$H$13,"O") + COUNTIF($B$11:$H$13,"F") + COUNTIF($B$11:$H$13,"O+")*1.5 +  COUNTIF($B$11:$H$13,"F+")*1.5 + COUNTIF($B$11:$H$13,"O-")*0.5 + COUNTIF($B$11:$H$13,"F-")*0.5 & "/11"';
+        const total_shift_no_s1_w3 = '=COUNTIF($B$18:$H$20,"O") + COUNTIF($B$18:$H$20,"F") + COUNTIF($B$18:$H$20,"O+")*1.5 +  COUNTIF($B$18:$H$20,"F+")*1.5 + COUNTIF($B$18:$H$20,"O-")*0.5 + COUNTIF($B$18:$H$20,"F-")*0.5 & "/11"';
+        const total_shift_no_s1_w4 = '=COUNTIF($B$25:$H$27,"O") + COUNTIF($B$25:$H$27,"F") + COUNTIF($B$25:$H$27,"O+")*1.5 +  COUNTIF($B$25:$H$27,"F+")*1.5 + COUNTIF($B$25:$H$27,"O-")*0.5 + COUNTIF($B$25:$H$27,"F-")*0.5 & "/11"';
+        const total_shift_no_s1_w5 = '=COUNTIF($B$32:$H$34,"O") + COUNTIF($B$32:$H$34,"F") + COUNTIF($B$32:$H$34,"O+")*1.5 +  COUNTIF($B$32:$H$34,"F+")*1.5 + COUNTIF($B$32:$H$34,"O-")*0.5 + COUNTIF($B$32:$H$34,"F-")*0.5 & "/11"';
+        const data1 = [
+            ['同工1', '', '', '', '', '', '', total_shift_no_s1_w1],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+            ['', '', '', '', '', '', '', total_shift_no_s1_w2],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+            ['', '', '', '', '', '', '', total_shift_no_s1_w3],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+            ['', '', '', '', '', '', '', total_shift_no_s1_w4],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+            ['', '', '', '', '', '', '', total_shift_no_s1_w5],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+        ];
+        
+        const data2 = [
+            ['同工2', '', '', '', '', '', '', total_shift_no_s1_w1],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+            ['', '', '', '', '', '', '', total_shift_no_s1_w2],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+            ['', '', '', '', '', '', '', total_shift_no_s1_w3],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+            ['', '', '', '', '', '', '', total_shift_no_s1_w4],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+            ['', '', '', '', '', '', '', total_shift_no_s1_w5],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+        ];
+
+        const data3 = [
+            ['同工3', '', '', '', '', '', '', total_shift_no_s1_w1],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+            ['', '', '', '', '', '', '', total_shift_no_s1_w2],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+            ['', '', '', '', '', '', '', total_shift_no_s1_w3],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+            ['', '', '', '', '', '', '', total_shift_no_s1_w4],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+            ['', '', '', '', '', '', '', total_shift_no_s1_w5],
+            ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            ['Start Time', '10:00', '10:00', '10:00', '10:00', '10:00', '--:--', '--:--'],
+            ['Morning', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Afternoon', 'O', 'O', 'O', 'F', 'O', , , ],
+            ['Evening', , , , 'F', , , , ],
+            ['End Time', '7:00' , '7:00', '7:00', '11:00', '7:00', '--:--', '--:--'],
+        ];
+
+        const hyperformulaInstance = HyperFormula.buildEmpty({
+            // to use an external HyperFormula instance,
+            // initialize it with the `'internal-use-in-handsontable'` license key
+            licenseKey: 'internal-use-in-handsontable',
+        });
+        
+        // create Handsontables
+        const container0 = document.querySelector('#container0');
+        const console0 = document.querySelector('#console0');
+        const staffSave0 = document.querySelector('#staff_save0');
+        const staff0 = new Handsontable(container0, {
+            data: data0,
+            startRows: 8,
+            startCols: 6,
+            rowHeaders: true,
+            colHeaders: true,
+            // colHeaders: ['Shift/Day', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+            comments: true,
+            cell: [
+                { row: 1, col: 1, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 2, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 3, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 4, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 5, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 6, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 7, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 10, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 11, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 12, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 13, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 14, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 15, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 16, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 19, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 20, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 21, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 22, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 23, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 24, comment: { value: 'Insert comments here:' } },
+                { row: 1, col: 25, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 1, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 2, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 3, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 4, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 5, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 6, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 7, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 10, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 11, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 12, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 13, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 14, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 15, comment: { value: 'Insert comments here:' } },
+                { row: 9, col: 16, comment: { value: 'Insert comments here:' } },
+            ],
+            cells: function(row, col) {
+                const cellProperties = {};
+                
+                // map all staff 0's shift cells and apply shift validator
+                // row of staff 0's shifts
+                const s0srow1 = [3, 5]
+                const s0srow2 = [11, 13]
+
+                // col of staff 0's shifts
+                const s0scolw14 = [1, 7] // week1 & week4
+                const s0scolw25 = [10, 16] // week2 & week5
+                const s0scolw3 = [19, 25] // week3
+                
+                // map all staff 0's start/end time cells and apply time validator
+                // row of staff 0's start/end time
+                const s0trow = [2, 6, 10, 14]
+
+                if (((row >= s0srow1[0] && row <= s0srow1[1]) ||
+                     (row >= s0srow2[0] && row <= s0srow2[1])) &&
+                    ((col >= s0scolw14[0] && col <= s0scolw14[1]) ||
+                     (col >= s0scolw25[0] && col <= s0scolw25[1]) ||
+                     (col >= s0scolw3[0] && col <= s0scolw3[1]))
+                )
+                    cellProperties.validator = 'shift_validator';
+                else if ((row == s0trow[0] ||
+                        row == s0trow[1] ||
+                        row == s0trow[2] ||
+                        row == s0trow[3]) &&
+                        ((col >= s0scolw14[0] && col <= s0scolw14[1]) ||
+                        (col >= s0scolw25[0] && col <= s0scolw25[1]) ||
+                        (col >= s0scolw3[0] && col <= s0scolw3[1]))
+                ){
+                    cellProperties.type = 'time';
+                    cellProperties.timeFormat= 'hh:mm';
+                } else
+                    cellProperties.readOnly = true;
+                return cellProperties;
+            },
+            // afterChange: function(changes) {
+            //     changes.forEach(([row, prop, oldValue, newValue]) {
+            //         col = this.propToCol(prop);
+            //         if (row == 2 || row == 10) {
+            //             endTime = getDataAtCell(row + 4, col)
+            //             if (endTime - newValue != )
+
+            //         }
+            //     });
+            // },
+            afterValidate: function(isValid, value, row, prop) {
+                col = this.propToCol(prop);
+                day = staff0.getDataAtCell(1, col)
+                session = staff0.getDataAtCell(row, 0)
+                if (!isValid) {
+                    if (row == 2 || row == 6 || row == 10 || row == 14)
+                        alert("Invalid time format at " + day + " for " + session.toLowerCase() + "\nrow: " + row + ", col: " + col);
+                    else 
+                        alert("Invalid shift at " + day + ", " + session.toLowerCase() + " session.\nrow: " + row + ", col: " + col);
+                }
+            },
+            height: 'auto',
+            // use HyperFormula within Handsontable's default Formulas plugin
+            formulas: {
+                engine: hyperformulaInstance,
+                sheetName: 'Sheet0'
+            },
+            licenseKey: 'non-commercial-and-evaluation',
+            persistentState: true
+        });
+        
+        // Registering shift validator
+        function shiftValidator(value, callback) {
+            if (value == 'O' || value == 'O+' ||  value == 'O-' || 
+                value == 'F' || value == 'F+' || value == 'F-' || value == "" || value == null)
+                callback(true);
+            else {
+                callback(false);
+            }
+        }
+        // Register alias for shift validator
+        Handsontable.validators.registerValidator('shift_validator', shiftValidator);
+
+        const container1 = document.querySelector('#container1');
+        const console1 = document.querySelector('#console1');
+        const staffSave1 = document.querySelector('#staff_save1');
+        const staff1 = new Handsontable(container1, {
+            data: data1,
+            startRows: 8,
+            startCols: 6,
+            rowHeaders: true,
+            colHeaders: true,
+            height: 'auto',
+            // use HyperFormula within Handsontable's default Formulas plugin
+            formulas: {
+                engine: hyperformulaInstance,
+                sheetName: 'Sheet1'
+            },
+            licenseKey: 'non-commercial-and-evaluation',
+            persistentState: true
+        });
+        const container2 = document.querySelector('#container2');
+        const console2 = document.querySelector('#console2');
+        const staffSave2 = document.querySelector('#staff_save2');
+        const staff2 = new Handsontable(container2, {
+            data: data2,
+            startRows: 8,
+            startCols: 6,
+            rowHeaders: true,
+            colHeaders: true,
+            height: 'auto',
+            // use HyperFormula within Handsontable's default Formulas plugin
+            formulas: {
+                engine: hyperformulaInstance,
+                sheetName: 'Sheet2'
+            },
+            licenseKey: 'non-commercial-and-evaluation',
+            persistentState: true
+        });
+        const container3 = document.querySelector('#container3');
+        const console3 = document.querySelector('#console3');
+        const staffSave3 = document.querySelector('#staff_save3');
+        const staff3 = new Handsontable(container3, {
+            data: data3,
+            startRows: 8,
+            startCols: 6,
+            rowHeaders: true,
+            colHeaders: true,
+            height: 'auto',
+            // use HyperFormula within Handsontable's default Formulas plugin
+            formulas: {
+                engine: hyperformulaInstance,
+                sheetName: 'Sheet3'
+            },
+            licenseKey: 'non-commercial-and-evaluation',
+            persistentState: true
+        });
+
+        // Create saving function
+        Handsontable.dom.addEvent(staffSave0, 'click', function() {
+            var comments = staff0.getCellsMeta().filter(function(meta) {
+                return meta.comment !== void 0;
+                }).map(function(meta) {
+                return {
+                    row: meta.row,
+                    col: meta.col,
+                    comment: meta.comment
+                }
+            });
+            var comment = staff0.getCellsMeta().filter(function(meta) {
+                return meta.comment !== void 0;
+            })
+            console.log("comment[0]: " + JSON.stringify(comment['0']['comment']['value']));
+            console.log("comment: " + JSON.stringify(comment));
+            // save all comments and cell's data
+            console.log(JSON.stringify({data: staff0.getData()}));
+            var arr = {data: staff0.getData()};
+            $.ajax({
+                url: '/',
+                type: 'POST',
+                data: JSON.stringify(Object.assign(arr, comment)),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                async: true,
+                success: function() {
+                    console0.innerHTML = "Cells and comments saved."
+                },
+                error: function() {
+                    console0.innerHTML = "Error occured."
+                }
+            });
+        });
+        Handsontable.dom.addEvent(staffSave1, 'click', function() {
+            // save all cell's data
+            console.log(JSON.stringify({data: staff1.getData()}));
+            var arr = {data: staff1.getData()};
+            $.ajax({
+                url: '/',
+                type: 'POST',
+                data: JSON.stringify(arr),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                async: true,
+                success: function() {
+                    console1.innerHTML = "Cells and comments saved."
+                },
+                error: function() {
+                    console1.innerHTML = "Error occured."
+                }
+            });
+        });
+        Handsontable.dom.addEvent(staffSave2, 'click', function() {
+            // save all cell's data
+            console.log(JSON.stringify({data: staff2.getData()}));
+            var arr = {data: staff2.getData()};
+            $.ajax({
+                url: '/',
+                type: 'POST',
+                data: JSON.stringify(arr),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                async: true,
+                success: function() {
+                    console2.innerHTML = "Cells and comments saved."
+                },
+                error: function() {
+                    console2.innerHTML = "Error occured."
+                }
+            });
+        });
+        Handsontable.dom.addEvent(staffSave3, 'click', function() {
+            // save all cell's data
+            console.log(JSON.stringify({data: staff3.getData()}));
+            var arr = {data: staff3.getData()};
+            $.ajax({
+                url: '/',
+                type: 'POST',
+                data: JSON.stringify(arr),
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                async: true,
+                success: function() {
+                    console3.innerHTML = "Cells and comments saved."
+                },
+                error: function() {
+                    console3.innerHTML = "Error occured."
+                }
+            });
+        });
+    </script>
+</html>
