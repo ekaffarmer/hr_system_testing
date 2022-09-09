@@ -278,23 +278,41 @@
                     cellProperties.readOnly = true;
                 return cellProperties;
             },
-            // afterChange: function(changes) {
-            //     changes.forEach(([row, prop, oldValue, newValue]) {
-            //         col = this.propToCol(prop);
-            //         if (row == 2 || row == 10) {
-            //             endTime = getDataAtCell(row + 4, col)
-            //             if (endTime - newValue != )
-
-            //         }
-            //     });
-            // },
+            afterChange: function(changes, source) {
+                if (source != "edit")
+                    return;
+                else {
+                    let totalShiftNo = 0;
+                    changes.forEach(([row, prop, oldValue, newValue]) => {
+                        console.log("change: row " + row + ", col " + col + ", old " + oldValue + ", new " + newValue)
+                        col = this.propToCol(prop);
+                        // count total shift no
+                        for (let i = 1; i < 4; i++) {
+                            shift = staff0.getDataAtCell(row + i, col);
+                            if (shift == "O" | shift == "F")
+                                totalshiftNo++;
+                        }
+                        // check if difference between start/end time match with total shift no
+                        if (row == 2 || row == 10) {
+                            endTime = staff0.getDataAtCell(row + 4, col);
+                            console.log("endTime - startTime = " + (endTime - newValue));
+                            alert("hi");
+                            if (endTime - newValue != totalshiftNo * 4) {
+                                staff0.setCellMeta(row, col, "valid", false);
+                                alert("Time is wrong.");
+                            }
+                        }
+                    });
+                }
+            },
             afterValidate: function(isValid, value, row, prop) {
                 col = this.propToCol(prop);
                 day = staff0.getDataAtCell(1, col)
                 session = staff0.getDataAtCell(row, 0)
                 if (!isValid) {
                     if (row == 2 || row == 6 || row == 10 || row == 14)
-                        alert("Invalid time format at " + day + " for " + session.toLowerCase() + "\nrow: " + row + ", col: " + col);
+                        return;
+                        // alert("Invalid time format at " + day + " for " + session.toLowerCase() + "\nrow: " + row + ", col: " + col);
                     else 
                         alert("Invalid shift at " + day + ", " + session.toLowerCase() + " session.\nrow: " + row + ", col: " + col);
                 }
